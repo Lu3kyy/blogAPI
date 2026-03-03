@@ -5,13 +5,13 @@
 namespace CODE.Migrations
 {
     /// <inheritdoc />
-    public partial class Init : Migration
+    public partial class Initial : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
-                name: "BlogItems",
+                name: "BlogInfo",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
@@ -29,11 +29,11 @@ namespace CODE.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_BlogItems", x => x.Id);
+                    table.PrimaryKey("PK_BlogInfo", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
-                name: "Users",
+                name: "UserInfo",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
@@ -44,7 +44,7 @@ namespace CODE.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Users", x => x.Id);
+                    table.PrimaryKey("PK_UserInfo", x => x.Id);
                 });
         }
 
@@ -52,10 +52,10 @@ namespace CODE.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "BlogItems");
+                name: "BlogInfo");
 
             migrationBuilder.DropTable(
-                name: "Users");
+                name: "UserInfo");
         }
     }
 }

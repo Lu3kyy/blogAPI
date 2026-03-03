@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using blogAPI.Services.Context;
 
@@ -9,10 +10,12 @@ using blogAPI.Services.Context;
 
 namespace CODE.Migrations
 {
-    [DbContext(typeof(Context))]
-    partial class ContextModelSnapshot : ModelSnapshot
+    [DbContext(typeof(DataContext))]
+    [Migration("20260303175043_Initial")]
+    partial class Initial
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -61,7 +64,7 @@ namespace CODE.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("BlogItems");
+                    b.ToTable("BlogInfo");
                 });
 
             modelBuilder.Entity("blogAPI.Models.UserModel", b =>
@@ -83,7 +86,7 @@ namespace CODE.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Users");
+                    b.ToTable("UserInfo");
                 });
 #pragma warning restore 612, 618
         }
