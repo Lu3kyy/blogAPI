@@ -106,16 +106,16 @@ Items Saved to DB
 We need authentication using username and password.
 
 ```csharp
-LoginModel
+LoginModel DTO
     string Username
     string Password
 
-CreateAccountModel
+CreateAccountModel DTO
     int Id = 0
     string Username
     string Password
 
-PasswordModel
+PasswordModel DTO
     string Salt
     string Hash
 ```

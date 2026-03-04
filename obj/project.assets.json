@@ -4911,19 +4911,19 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\hairt\\.nuget\\packages\\": {}
+    "C:\\Users\\mommy\\.nuget\\packages\\": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\hairt\\Desktop\\blogAPI\\blogAPI\\CODE.csproj",
+      "projectUniqueName": "D:\\CODE\\CODE.csproj",
       "projectName": "CODE",
-      "projectPath": "C:\\Users\\hairt\\Desktop\\blogAPI\\blogAPI\\CODE.csproj",
-      "packagesPath": "C:\\Users\\hairt\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\hairt\\Desktop\\blogAPI\\blogAPI\\obj\\",
+      "projectPath": "D:\\CODE\\CODE.csproj",
+      "packagesPath": "C:\\Users\\mommy\\.nuget\\packages\\",
+      "outputPath": "D:\\CODE\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
-        "C:\\Users\\hairt\\AppData\\Roaming\\NuGet\\NuGet.Config"
+        "C:\\Users\\mommy\\AppData\\Roaming\\NuGet\\NuGet.Config"
       ],
       "originalTargetFrameworks": [
         "net9.0"
