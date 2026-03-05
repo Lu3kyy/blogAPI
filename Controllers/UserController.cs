@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using blogAPI.Models;
 using blogAPI.Models.DTO;
 using blogAPI.Services;
+using CODE.Models.DTO;
 using Microsoft.AspNetCore.Mvc;
 
 namespace blogAPI.Controllers
@@ -35,6 +36,21 @@ namespace blogAPI.Controllers
 
 
 
+
+
+
+        [HttpGet("GetUserByUsername")]
+        public UserIdDTO GetUserDTOUsername(string username)
+        {
+            return _data.GetUserIdDTOByUsername(username);
+        }
+
+        [HttpPost("Login")]
+        public IActionResult Login([FromBody] LoginDTO User)
+        {
+           return _data.Login(User);
+            
+        }
 
 
     }

@@ -1,17 +1,24 @@
 using System;
 using System.Collections.Generic;
+using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Security.Cryptography;
+using System.Text;
 using System.Threading.Tasks;
 using blogAPI.Models;
 using blogAPI.Models.DTO;
 using blogAPI.Services.Context;
+using CODE.Models.DTO;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Identity.Client;
+using Microsoft.IdentityModel.Tokens;
+using System.Security.Claims;
+using Microsoft.AspNetCore.Http.HttpResults;
 
 namespace blogAPI.Services;
 
-public class UserService
+public class UserService : ControllerBase
 {
     private readonly DataContext _context;
     private object newUser;
@@ -90,10 +97,42 @@ public class UserService
 
     internal IEnumerable<UserModel> GetAllUsers()
     {
-        return _context.UserInfo.ToList();
+        return _context.UserInfo;
+    }
+    
+   public IActionResult Login(LoginDTO User)
+    {
+        IActionResult result = Unauthorized();
+        if (DoesUserExist(User.Username))
+        {
+           
+           //create a secret key used to sign the jtw token
+           //this should be stored securely (not hard coded in production)
+           var secretKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("SuperSuperSuperSuperDuperSecureKey@123"));
+           var signingCredentials = new SigningCredentials(secretKey, SecurityAlgorithms.HmacSha256);
+           
+           var tokenOptions = new JwtSecurityToken(
+               issuer: "http://localhost:5000",
+                audience: "http://localhost:5000",
+                claims: new List<Claim>(),
+                expires: DateTime.Now.AddMinutes(5),
+                signingCredentials: signingCredentials
+           );
+
+           //convert the token to a string and return it
+              var tokenString = new JwtSecurityTokenHandler().WriteToken(tokenOptions);
+
+
+             result = Ok(new { Token = tokenString });
+        }
+        //return either the token (if user exists) or an unauthorized message
+        return result;
     }
 
-
+    internal UserIdDTO GetUserIdDTOByUsername(string username)
+    {
+        throw new NotImplementedException();
+    }
 }
 
 
