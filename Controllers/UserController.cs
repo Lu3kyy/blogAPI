@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using blogAPI.Models;
 using blogAPI.Models.DTO;
 using blogAPI.Services;
 using Microsoft.AspNetCore.Mvc;
@@ -25,6 +26,16 @@ namespace blogAPI.Controllers
         {
             return _data.AddUser(userToAdd);
         }
+
+        [HttpGet("GetAllUsers")]
+        public IEnumerable<UserModel> GetAllUsers()
+        {
+            return _data.GetAllUsers();
+        }
+
+
+
+
 
     }
 }

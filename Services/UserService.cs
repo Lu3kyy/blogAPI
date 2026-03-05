@@ -87,6 +87,13 @@ public class UserService
         var newHash = Convert.ToBase64String(rfc2898DeriveBytes.GetBytes(256));
         return newHash == storedHash;
     }
+
+    internal IEnumerable<UserModel> GetAllUsers()
+    {
+        return _context.UserInfo.ToList();
+    }
+
+
 }
 
 
