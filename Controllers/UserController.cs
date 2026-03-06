@@ -53,5 +53,19 @@ namespace blogAPI.Controllers
         }
 
 
+        [HttpDelete("DeleteUser/{userToDelete}")]
+        public bool DeleteUser(string userToDelete)
+        {
+           return _data.DeleteUser(userToDelete);
+        }
+
+
+
+        //update user, this will take in a user model and update the user with the same id as the user model, this will return a boolean if the user was updated or not
+        public bool UpdateUser(int Id, string username)
+        {
+            return _data.UpdateUser(Id, username);
+        }
+
     }
 }

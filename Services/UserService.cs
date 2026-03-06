@@ -57,14 +57,14 @@ public class UserService : ControllerBase
 
             result = _context.SaveChanges() != 0;
         }
-         return result;
-     }
-       
+        return result;
+    }
 
 
 
 
-        public PasswordDTO HashPassword(string? password)
+
+    public PasswordDTO HashPassword(string? password)
     {
         PasswordDTO newHashedPassword = new PasswordDTO();
 
@@ -99,31 +99,46 @@ public class UserService : ControllerBase
     {
         return _context.UserInfo;
     }
-    
-   public IActionResult Login(LoginDTO User)
+
+        //get all user data by username function
+        public UserModel GetAllUserDataByUsername(string username)
+        {
+            return _context.UserInfo.SingleOrDefault(user => user.Username == username);
+        }
+
+
+
+
+    public IActionResult Login(LoginDTO User)
     {
         IActionResult result = Unauthorized();
         if (DoesUserExist(User.Username))
         {
-           
-           //create a secret key used to sign the jtw token
-           //this should be stored securely (not hard coded in production)
-           var secretKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("SuperSuperSuperSuperDuperSecureKey@123"));
-           var signingCredentials = new SigningCredentials(secretKey, SecurityAlgorithms.HmacSha256);
-           
-           var tokenOptions = new JwtSecurityToken(
-               issuer: "http://localhost:5000",
-                audience: "http://localhost:5000",
-                claims: new List<Claim>(),
-                expires: DateTime.Now.AddMinutes(5),
-                signingCredentials: signingCredentials
-           );
+            UserModel foundUser = GetAllUserDataByUsername(User.Username);
 
-           //convert the token to a string and return it
-              var tokenString = new JwtSecurityTokenHandler().WriteToken(tokenOptions);
+            if(VerifyUserPassword(User.Password, foundUser.Hash, foundUser.Salt))
+            {
+             
+            
+            //create a secret key used to sign the jtw token
+            //this should be stored securely (not hard coded in production)
+            var secretKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("SuperSuperSuperSuperDuperSecureKey@123"));
+            var signingCredentials = new SigningCredentials(secretKey, SecurityAlgorithms.HmacSha256);
+
+            var tokenOptions = new JwtSecurityToken(
+                issuer: "http://localhost:5000",
+                 audience: "http://localhost:5000",
+                 claims: new List<Claim>(),
+                 expires: DateTime.Now.AddMinutes(5),
+                 signingCredentials: signingCredentials
+            );
+
+            //convert the token to a string and return it
+            var tokenString = new JwtSecurityTokenHandler().WriteToken(tokenOptions);
 
 
-             result = Ok(new { Token = tokenString });
+            result = Ok(new { Token = tokenString });
+            }
         }
         //return either the token (if user exists) or an unauthorized message
         return result;
@@ -132,6 +147,45 @@ public class UserService : ControllerBase
     internal UserIdDTO GetUserIdDTOByUsername(string username)
     {
         throw new NotImplementedException();
+    }
+
+
+    //create a helper function to help us find a user with user by username, this will return a user model if the user is found, if not it will return null
+    public UserModel GetUserByUsername(string username)
+    {
+        return _context.UserInfo.SingleOrDefault(user => user.Username == username);
+    }
+
+
+    public bool DeleteUser(string userToDelete)
+    {
+        UserModel foundUser = GetUserByUsername(userToDelete);
+        bool result = false;
+        if (foundUser != null)
+        {
+            foundUser.Username = userToDelete;
+            _context.UserInfo.Remove(foundUser);
+        }
+        return result;
+    }
+
+
+
+    public UserModel GetUserById(int id)
+    {
+        return _context.UserInfo.SingleOrDefault(user => user.Id == id);
+    }
+    public bool UpdateUser(int id, string username)
+    {
+        UserModel foundUser = GetUserById(id);
+        bool result = false;
+        if (foundUser != null)
+        {
+            foundUser.Username = username;
+            _context.Update(foundUser);
+            result = _context.SaveChanges() != 0;
+        }
+        return result;
     }
 }
 
